@@ -16,7 +16,7 @@ parse_git_branch (){
 
   git_stash="$(git stash list 2> /dev/null)"
   if [[ ! ${#git_stash} -eq 0 ]]; then
-      status="${status} ☢"
+      status="${status} ࿕"
   fi
 
   echo -e "$status "
