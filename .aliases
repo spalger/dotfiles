@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+function __findGradleWrapper {
+  script="$1/gradlew"
+
+  if [[ "$1" == "/" ]]; then
+    return
+  elif [ ! -x "$script" ]; then
+    parent="$(cd "$1/.." && pwd || echo "/")"
+    __findGradleWrapper "$parent"
+  else
+    echo "$script"
+  fi
+}
+
+function kbx {
+  base="$HOME/kbn-dev/${1:-master}"
+  if [ -d "$base/kibana-extra" ]; then
+    cd "$base/kibana-extra/x-pack-kibana" || return 1
+  else
+    cd "$base/x-pack-kibana" || return 1
+  fi
+}
+
+function kbn {
+  cd "${HOME}/kbn-dev/${1:-master}/kibana" || return 1
+}
+
+function gradle {
+  "$(__findGradleWrapper "$(pwd)")" "$*"
+}
+
+function kbs {
+  gradleW="$(__findGradleWrapper "$(pwd)")"
+  if [[ -x "$gradleW" ]]; then
+    echo "Bootstraping with gradle wrapper: $gradleW"
+    "$gradleW" bootstrap
+  else
+    echo "Bootstraping with yarn"
+    yarn kbn bootstrap
+  fi
+}
+
+function init_aws_session {
+
+  echo "Type current MFA token, followed by [ENTER]:"
+  read token
+
+  arn="$(aws sts get-caller-identity --output text --query Arn | sed 's|:user/|:mfa/|')"
+  session="$(aws sts get-session-token --serial-number "$arn" --token-code "$token" --output json)"
+  id="$(echo "$session" | jq -r .Credentials.AccessKeyId)"
+  key="$(echo "$session" | jq -r .Credentials.SecretAccessKey)"
+  token="$(echo "$session" | jq -r .Credentials.SessionToken)"
+
+  export AWS_ACCESS_KEY_ID="$id"
+  export AWS_SECRET_ACCESS_KEY="$key"
+  export AWS_SESSION_TOKEN="$token"
+
+  export PS1=" AWS > "
+}
