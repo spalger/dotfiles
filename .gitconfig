@@ -1,6 +1,6 @@
 [user]
-  name = spalger
-	email = email@spalger.com
+	name = spalger
+	email = spalger@users.noreply.github.com
 
 [core]
   autocrlf = input
@@ -21,7 +21,7 @@
   default = current
 
 [credential]
-  helper = osxkeychain
+	helper = osxkeychain
 
 [format]
   pretty = format:[%Cgreen%h%Creset][%ad] %an: %s

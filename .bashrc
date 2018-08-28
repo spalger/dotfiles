@@ -41,6 +41,7 @@ __spalger_dotfiles__() {
 
     export PATH=$HOME/bin:$PATH
     export PATH=$HOME/.dotfiles/bin:$PATH
+    export PATH=$HOME/.rbenv/bin:$PATH
   }
 
   setup_java() {
@@ -64,6 +65,8 @@ __spalger_dotfiles__() {
     export NVM_DIR="$HOME/.nvm"
     source "${NVM_DIR}/nvm.sh"  # This loads nvm
 
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
     # setup automatic node version switching
     source "${HOME}/.avn/bin/avn.sh" # load avn
   }
@@ -77,8 +80,8 @@ __spalger_dotfiles__() {
   setup_ps1() {
     export GITAWAREPROMPT="${HOME}/.dotfiles/repos/git-aware-prompt"
     source "${GITAWAREPROMPT}/main.sh"
-    # shellcheck disable=SC2154
-    export PS1="\w \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\] \$ "
+    # shellcheck disable=SC2154 
+    export PS1="\[$txtpur\]\h\[$txtrst\] \[$txtblu\]\w\[$txtrst\] \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\] \$ "
   }
 
   main
