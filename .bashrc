@@ -14,7 +14,6 @@ __spalger_dotfiles__() {
     setup_rust
     setup_ruby
     setup_ps1
-    setup_sdkman
   }
 
   setup_aliases() {
@@ -69,12 +68,6 @@ __spalger_dotfiles__() {
 
     # setup automatic node version switching
     source "${HOME}/.avn/bin/avn.sh" # load avn
-  }
-
-  setup_sdkman() {
-    #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-    export SDKMAN_DIR="${HOME}/.sdkman"
-    source "${SDKMAN_DIR}/bin/sdkman-init.sh"
   }
 
   setup_ps1() {
